@@ -1,0 +1,7 @@
+{
+  "name": "WanderGenius AI",
+  "description": "An intelligent AI travel assistant that creates personalized trip recommendations based on your unique interests and travel constraints using Google Maps grounding.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
