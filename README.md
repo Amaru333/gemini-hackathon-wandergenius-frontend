@@ -32,6 +32,14 @@ A modern, AI-powered travel planning application built with React 19, TypeScript
 - **Achievement Badges**: Earn badges for milestones (First Trip, Jet Setter, World Traveler, Critic, Explorer, etc.)
 - **Personalized Suggestions**: AI-generated trip recommendations based on past reviews and preferences
 
+### Offline Mode (PWA)
+
+- **Save Trips Offline**: Download trips with full itinerary, packing list, and maps for offline access
+- **Offline Maps**: Map tiles are cached for the destination area (10-15km radius)
+- **Offline Indicator**: Visual feedback when you're offline with access to saved trips
+- **Installable App**: Install as a Progressive Web App on mobile and desktop
+- **Auto-sync**: Changes sync automatically when back online
+
 ## Tech Stack
 
 | Technology | Purpose |
@@ -46,6 +54,9 @@ A modern, AI-powered travel planning application built with React 19, TypeScript
 | Lucide React | Icon Library |
 | React Markdown | Markdown Rendering |
 | html-to-image | Image Export |
+| vite-plugin-pwa | PWA & Service Worker |
+| idb | IndexedDB Wrapper |
+| workbox-window | Service Worker Registration |
 
 ## Project Structure
 
@@ -73,11 +84,15 @@ wandergenius-ai/
 │   │   ├── ShareTripModal.tsx  # Trip sharing options
 │   │   ├── StarRating.tsx      # Star rating input/display
 │   │   ├── TravelStats.tsx     # User travel statistics
-│   │   ├── VotingButtons.tsx   # Activity voting controls
-│   │   └── WeatherCard.tsx     # Weather display widget
+│   │   ├── VotingButtons.tsx       # Activity voting controls
+│   │   ├── WeatherCard.tsx         # Weather display widget
+│   │   ├── OfflineIndicator.tsx    # Offline status banner & badge
+│   │   ├── OfflineMapTileLayer.tsx # Cached map tiles for offline
+│   │   └── SaveOfflineButton.tsx   # Download trip for offline
 │   │
 │   ├── contexts/
-│   │   └── AuthContext.tsx     # Authentication state management
+│   │   ├── AuthContext.tsx     # Authentication state management
+│   │   └── OfflineContext.tsx  # Offline state & IndexedDB management
 │   │
 │   ├── pages/                  # Route page components
 │   │   ├── AcceptInvitePage.tsx    # Collaboration invite acceptance
@@ -92,10 +107,12 @@ wandergenius-ai/
 │   │   ├── PublicTripPage.tsx      # Shared trip view
 │   │   ├── RegisterPage.tsx        # User registration
 │   │   ├── ResultsPage.tsx         # AI recommendation results
-│   │   └── TripPlannerPage.tsx     # Trip planning form
+│   │   ├── TripPlannerPage.tsx     # Trip planning form
+│   │   └── OfflineTripsPage.tsx    # Offline saved trips management
 │   │
 │   └── services/
-│       └── api.ts              # API client service
+│       ├── api.ts              # API client service
+│       └── offlineStorage.ts   # IndexedDB offline storage
 │
 ├── index.html                  # HTML entry point
 ├── vite.config.ts              # Vite configuration
@@ -181,6 +198,7 @@ The frontend connects to the backend API at `http://localhost:5001/api` by defau
 | `/history` | HistoryPage | Trip history |
 | `/itinerary/:id` | ItineraryPage | View/edit trip itinerary |
 | `/itinerary/new` | ItineraryPage | Create new itinerary |
+|| `/offline` | OfflineTripsPage | Manage offline saved trips |
 
 ## Key Components
 

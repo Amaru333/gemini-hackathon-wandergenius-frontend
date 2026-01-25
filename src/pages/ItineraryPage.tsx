@@ -21,7 +21,9 @@ import {
   Star,
   DollarSign,
   Sparkles,
-  Camera
+  Camera,
+  Download,
+  WifiOff
 } from 'lucide-react';
 import { api } from '../services/api';
 import { WeatherCard } from '../components/WeatherCard';
@@ -33,6 +35,8 @@ import { ReviewModal } from '../components/ReviewModal';
 import { StarRating } from '../components/StarRating';
 import { PackingList } from '../components/PackingList';
 import { PhotoJournal } from '../components/PhotoJournal';
+import { SaveOfflineButton } from '../components/SaveOfflineButton';
+import { useOffline } from '../contexts/OfflineContext';
 
 interface Activity {
   time: string;
@@ -58,9 +62,11 @@ interface ChecklistItem {
 export const ItineraryPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const location = useLocation();
+  const { isOnline, getOfflineTripById } = useOffline();
   const [trip, setTrip] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [isOfflineMode, setIsOfflineMode] = useState(false);
   const [activeTab, setActiveTab] = useState<'itinerary' | 'budget' | 'photos'>('itinerary');
   const [photoCount, setPhotoCount] = useState(0);
   const [activeDay, setActiveDay] = useState(1);
@@ -119,12 +125,37 @@ export const ItineraryPage: React.FC = () => {
 
   const loadSavedTrip = async (tripId: string) => {
     try {
+      // Try to load from API first
       const data = await api.getSavedTrip(tripId);
       setTrip(data);
       setChecklist(data.checklist || []);
+      setIsOfflineMode(false);
       // Load votes for collaboration
       loadVotes(tripId);
     } catch (err: any) {
+      // If offline or API fails, try to load from offline storage
+      if (!isOnline || err.message?.includes('fetch') || err.message?.includes('network')) {
+        const offlineTrip = getOfflineTripById(tripId);
+        if (offlineTrip) {
+          setTrip({
+            id: offlineTrip.id,
+            destinationName: offlineTrip.destinationName,
+            destinationLat: offlineTrip.destinationLat,
+            destinationLng: offlineTrip.destinationLng,
+            photoUrl: offlineTrip.photoUrl,
+            days: offlineTrip.days,
+            startLocation: offlineTrip.startLocation,
+            itinerary: offlineTrip.itinerary,
+            checklist: offlineTrip.checklist,
+            isPublic: offlineTrip.isPublic,
+            shareId: offlineTrip.shareId,
+          });
+          setChecklist(offlineTrip.checklist || []);
+          setIsOfflineMode(true);
+          setLoading(false);
+          return;
+        }
+      }
       setError(err.message || 'Failed to load trip');
     } finally {
       setLoading(false);
@@ -273,6 +304,24 @@ export const ItineraryPage: React.FC = () => {
            >
              <Share2 className="w-4 h-4" /> Share
            </button>
+           {trip.id && (
+             <SaveOfflineButton 
+               trip={{
+                 id: trip.id,
+                 destinationName: trip.destinationName,
+                 destinationLat: trip.destinationLat,
+                 destinationLng: trip.destinationLng,
+                 photoUrl: trip.photoUrl,
+                 days: trip.days,
+                 startLocation: trip.startLocation,
+                 itinerary: trip.itinerary,
+                 checklist: checklist,
+                 isPublic: trip.isPublic,
+                 shareId: trip.shareId,
+               }}
+               variant="button"
+             />
+           )}
         </div>
         {trip.photoUrl && (
           <div className="absolute inset-0 opacity-20 rounded-2xl overflow-hidden pointer-events-none">
@@ -293,6 +342,12 @@ export const ItineraryPage: React.FC = () => {
                 <Star className="w-4 h-4 text-amber-400 fill-amber-400" />
                 <span className="font-medium">{reviews.averages.overallRating.toFixed(1)}</span>
                 <span className="text-slate-400">({reviews.totalReviews} review{reviews.totalReviews !== 1 ? 's' : ''})</span>
+              </span>
+            )}
+            {isOfflineMode && (
+              <span className="flex items-center gap-1.5 bg-amber-500/20 px-3 py-1 rounded-full text-amber-300">
+                <WifiOff className="w-4 h-4" />
+                <span className="font-medium">Offline Mode</span>
               </span>
             )}
           </div>

@@ -2,6 +2,7 @@ import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { Layout } from './components/Layout';
 import { ProtectedRoute } from './components/ProtectedRoute';
+import { OfflineIndicator } from './components/OfflineIndicator';
 import { LandingPage } from './pages/LandingPage';
 import { LoginPage } from './pages/LoginPage';
 import { RegisterPage } from './pages/RegisterPage';
@@ -15,10 +16,13 @@ import { AcceptInvitePage } from './pages/AcceptInvitePage';
 import { PublicProfilePage } from './pages/PublicProfilePage';
 import { PhotoAlbumPage } from './pages/PhotoAlbumPage';
 import { LeaderboardPage } from './pages/LeaderboardPage';
+import { OfflineTripsPage } from './pages/OfflineTripsPage';
 
 const App: React.FC = () => {
   return (
-    <Routes>
+    <>
+      <OfflineIndicator />
+      <Routes>
       {/* Public Share Routes (Standalone) */}
       <Route path="/share/:shareId" element={<PublicTripPage />} />
       <Route path="/trip/shared/:shareId" element={<PublicTripPage />} />
@@ -83,8 +87,17 @@ const App: React.FC = () => {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/offline"
+          element={
+            <ProtectedRoute>
+              <OfflineTripsPage />
+            </ProtectedRoute>
+          }
+        />
       </Route>
     </Routes>
+    </>
   );
 };
 

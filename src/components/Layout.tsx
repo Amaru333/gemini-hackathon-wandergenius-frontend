@@ -1,8 +1,9 @@
 import React from 'react';
 import { Link, useNavigate, useLocation, Outlet } from 'react-router-dom';
-import { Compass, User, LogOut, History, Map, Trophy } from 'lucide-react';
+import { Compass, User, LogOut, History, Map, Trophy, CloudOff } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { ChatWidget } from './ChatWidget';
+import { OfflineStatusBadge } from './OfflineIndicator';
 
 interface LayoutProps {
   children?: React.ReactNode;
@@ -61,6 +62,18 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
                   >
                     <History className="w-4 h-4" />
                     <span className="hidden sm:inline">History</span>
+                  </Link>
+                  <Link
+                    to="/offline"
+                    className={`flex items-center gap-2 px-4 py-2 rounded-xl font-semibold transition-all ${
+                      isActive('/offline')
+                        ? 'bg-amber-100 text-amber-700'
+                        : 'text-slate-600 hover:bg-slate-100'
+                    }`}
+                  >
+                    <CloudOff className="w-4 h-4" />
+                    <span className="hidden sm:inline">Offline</span>
+                    <OfflineStatusBadge />
                   </Link>
                   <Link
                     to="/profile"
