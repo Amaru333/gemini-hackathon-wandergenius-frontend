@@ -645,6 +645,63 @@ class ApiService {
     });
   }
 
+  // Smart Packing endpoints
+  async getSmartPackingSuggestions(tripId: string) {
+    return this.request<{
+      suggestions: {
+        items: Array<{
+          id: number;
+          task: string;
+          category: string;
+          completed: boolean;
+          reason: string;
+          priority: 'essential' | 'recommended' | 'optional';
+          weatherRelated: boolean;
+          isAiSuggested: boolean;
+        }>;
+        tips: string[];
+        warnings: string[];
+        weatherSummary: string | null;
+      };
+      tripInfo: {
+        destination: string;
+        days: number;
+        activities: string[];
+      };
+      weather: {
+        available: boolean;
+        forecast?: Array<{
+          date: string;
+          temp: number;
+          tempMin: number;
+          tempMax: number;
+          condition: string;
+          description: string;
+          humidity: number;
+          windSpeed: number;
+        }>;
+      };
+    }>('/smart-packing/optimize', {
+      method: 'POST',
+      body: JSON.stringify({ tripId }),
+    });
+  }
+
+  async applySmartPackingSuggestions(
+    tripId: string,
+    items: Array<{ task: string; category: string }>,
+    mode: 'merge' | 'replace' = 'merge'
+  ) {
+    return this.request<{
+      message: string;
+      checklist: Array<{ id: number; task: string; category: string; completed: boolean }>;
+      itemsAdded: number;
+    }>('/smart-packing/apply', {
+      method: 'POST',
+      body: JSON.stringify({ tripId, items, mode }),
+    });
+  }
+
   // Leaderboard endpoints (public, no auth required)
   async getLeaderboards() {
     const response = await fetch(`${API_URL}/leaderboards`, {
