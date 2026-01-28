@@ -104,8 +104,24 @@ export default defineConfig(({ mode }) => {
                 },
               },
               {
-                // Network-first for API calls (but cache for offline fallback)
-                urlPattern: /^http:\/\/localhost:5001\/api\/.*/i,
+                // Network-first for API calls (local dev)
+                urlPattern: /^http:\/\/localhost:\d+\/api\/.*/i,
+                handler: 'NetworkFirst',
+                options: {
+                  cacheName: 'api-cache',
+                  expiration: {
+                    maxEntries: 100,
+                    maxAgeSeconds: 60 * 60 * 24, // 1 day
+                  },
+                  cacheableResponse: {
+                    statuses: [0, 200],
+                  },
+                  networkTimeoutSeconds: 10,
+                },
+              },
+              {
+                // Network-first for API calls (GCP Cloud Run production)
+                urlPattern: /^https:\/\/.*\.run\.app\/api\/.*/i,
                 handler: 'NetworkFirst',
                 options: {
                   cacheName: 'api-cache',

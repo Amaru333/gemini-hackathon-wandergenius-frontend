@@ -16,7 +16,7 @@ import {
   Image as ImageIcon,
   DollarSign
 } from 'lucide-react';
-import { api } from '../services/api';
+import { api, API_URL } from '../services/api';
 import { DestinationsMap } from '../components/DestinationsMap';
 import { WeatherCard } from '../components/WeatherCard';
 
@@ -109,7 +109,7 @@ export const ResultsPage: React.FC = () => {
     try {
       // Use backend Google Maps geocoding API
       const response = await fetch(
-        `http://localhost:5001/api/geocode/geocode?address=${encodeURIComponent(name)}`
+        `${API_URL}/geocode/geocode?address=${encodeURIComponent(name)}`
       );
       
       if (!response.ok) {

@@ -1,5 +1,5 @@
 // API URL from environment variable, with fallback to localhost for development
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001/api';
+export const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001/api';
 
 class ApiService {
   private token: string | null = null;
