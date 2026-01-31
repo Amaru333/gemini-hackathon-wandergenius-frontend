@@ -1,5 +1,15 @@
 # WanderGenius AI - Frontend
 
+[![Frontend](https://img.shields.io/badge/Frontend-React%2019-61DAFB?style=flat&logo=react)](https://github.com/Amaru333/gemini-hackathon-wandergenius-frontend)
+[![Backend](https://img.shields.io/badge/Backend-Node.js-339933?style=flat&logo=node.js)](https://github.com/Amaru333/gemini-hackathon-wandergenius-backend)
+
+| Repository   | Link                                                                                                                             |
+| ------------ | -------------------------------------------------------------------------------------------------------------------------------- |
+| **Frontend** | [github.com/Amaru333/gemini-hackathon-wandergenius-frontend](https://github.com/Amaru333/gemini-hackathon-wandergenius-frontend) |
+| **Backend**  | [github.com/Amaru333/gemini-hackathon-wandergenius-backend](https://github.com/Amaru333/gemini-hackathon-wandergenius-backend)   |
+
+---
+
 A modern, AI-powered travel planning application built with React 19, TypeScript, and Vite. WanderGenius helps users discover personalized travel destinations, create detailed itineraries, collaborate with fellow travelers, and document their journeys.
 
 ## Features
@@ -42,21 +52,21 @@ A modern, AI-powered travel planning application built with React 19, TypeScript
 
 ## Tech Stack
 
-| Technology | Purpose |
-|------------|---------|
-| React 19 | UI Framework |
-| TypeScript | Type Safety |
-| Vite 6 | Build Tool & Dev Server |
-| React Router 7 | Client-side Routing |
-| Tailwind CSS | Styling (via inline classes) |
-| Leaflet / React-Leaflet | Interactive Maps |
-| Recharts | Budget Visualization Charts |
-| Lucide React | Icon Library |
-| React Markdown | Markdown Rendering |
-| html-to-image | Image Export |
-| vite-plugin-pwa | PWA & Service Worker |
-| idb | IndexedDB Wrapper |
-| workbox-window | Service Worker Registration |
+| Technology              | Purpose                      |
+| ----------------------- | ---------------------------- |
+| React 19                | UI Framework                 |
+| TypeScript              | Type Safety                  |
+| Vite 6                  | Build Tool & Dev Server      |
+| React Router 7          | Client-side Routing          |
+| Tailwind CSS            | Styling (via inline classes) |
+| Leaflet / React-Leaflet | Interactive Maps             |
+| Recharts                | Budget Visualization Charts  |
+| Lucide React            | Icon Library                 |
+| React Markdown          | Markdown Rendering           |
+| html-to-image           | Image Export                 |
+| vite-plugin-pwa         | PWA & Service Worker         |
+| idb                     | IndexedDB Wrapper            |
+| workbox-window          | Service Worker Registration  |
 
 ## Project Structure
 
@@ -124,44 +134,48 @@ wandergenius-ai/
 
 ### Prerequisites
 
-- Node.js 18+ 
+- Node.js 18+
 - npm or yarn
 - Backend API running (see backend README)
 
 ### Installation
 
 1. **Clone the repository**
+
    ```bash
    git clone <repository-url>
    cd wandergenius-ai
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm install
    ```
 
 3. **Configure environment**
-   
-   Create a `.env` file in the root directory:
+
+   Create a `.env.local` file in the root directory:
+
    ```env
-   GEMINI_API_KEY=your_google_gemini_api_key
+   VITE_API_URL=http://localhost:5001/api
    ```
 
 4. **Start the development server**
+
    ```bash
    npm run dev
    ```
-   
+
    The app will be available at `http://localhost:3000`
 
 ### Available Scripts
 
-| Command | Description |
-|---------|-------------|
-| `npm run dev` | Start development server on port 3000 |
-| `npm run build` | Build for production |
-| `npm run preview` | Preview production build |
+| Command           | Description                           |
+| ----------------- | ------------------------------------- |
+| `npm run dev`     | Start development server on port 3000 |
+| `npm run build`   | Build for production                  |
+| `npm run preview` | Preview production build              |
 
 ## Configuration
 
@@ -171,42 +185,47 @@ The frontend connects to the backend API at `http://localhost:5001/api` by defau
 
 ### Environment Variables
 
-| Variable | Description | Required |
-|----------|-------------|----------|
-| `GEMINI_API_KEY` | Google Gemini API key for AI features | Yes |
+| Variable       | Description                                         | Required |
+| -------------- | --------------------------------------------------- | -------- |
+| `VITE_API_URL` | Backend API URL (e.g., `http://localhost:5001/api`) | Yes      |
 
 ## Routes
 
 ### Public Routes
-| Path | Component | Description |
-|------|-----------|-------------|
-| `/` | LandingPage | Homepage |
-| `/login` | LoginPage | User login |
-| `/register` | RegisterPage | User registration |
-| `/leaderboard` | LeaderboardPage | Community leaderboards |
-| `/share/:shareId` | PublicTripPage | Shared trip view |
-| `/album/:shareId` | PhotoAlbumPage | Public photo album |
-| `/profile/:shareableId` | PublicProfilePage | Public user profile |
-| `/invite/:token` | AcceptInvitePage | Accept collaboration invite |
+
+| Path                    | Component         | Description                 |
+| ----------------------- | ----------------- | --------------------------- |
+| `/`                     | LandingPage       | Homepage                    |
+| `/login`                | LoginPage         | User login                  |
+| `/register`             | RegisterPage      | User registration           |
+| `/leaderboard`          | LeaderboardPage   | Community leaderboards      |
+| `/share/:shareId`       | PublicTripPage    | Shared trip view            |
+| `/album/:shareId`       | PhotoAlbumPage    | Public photo album          |
+| `/profile/:shareableId` | PublicProfilePage | Public user profile         |
+| `/invite/:token`        | AcceptInvitePage  | Accept collaboration invite |
 
 ### Protected Routes (Requires Authentication)
-| Path | Component | Description |
-|------|-----------|-------------|
-| `/profile` | ProfilePage | User profile & settings |
-| `/plan` | TripPlannerPage | Plan a new trip |
-| `/results/:tripId` | ResultsPage | View AI recommendations |
-| `/history` | HistoryPage | Trip history |
-| `/itinerary/:id` | ItineraryPage | View/edit trip itinerary |
-| `/itinerary/new` | ItineraryPage | Create new itinerary |
-|| `/offline` | OfflineTripsPage | Manage offline saved trips |
+
+| Path               | Component       | Description              |
+| ------------------ | --------------- | ------------------------ | -------------------------- |
+| `/profile`         | ProfilePage     | User profile & settings  |
+| `/plan`            | TripPlannerPage | Plan a new trip          |
+| `/results/:tripId` | ResultsPage     | View AI recommendations  |
+| `/history`         | HistoryPage     | Trip history             |
+| `/itinerary/:id`   | ItineraryPage   | View/edit trip itinerary |
+| `/itinerary/new`   | ItineraryPage   | Create new itinerary     |
+|                    | `/offline`      | OfflineTripsPage         | Manage offline saved trips |
 
 ## Key Components
 
 ### AuthContext
+
 Manages user authentication state, login/logout functionality, and token persistence using localStorage.
 
 ### API Service
+
 Centralized API client (`src/services/api.ts`) handling:
+
 - Authentication (register, login, logout)
 - Trip generation and management
 - Itinerary CRUD operations
@@ -216,14 +235,18 @@ Centralized API client (`src/services/api.ts`) handling:
 - Leaderboards
 
 ### WeatherCard
+
 Displays real-time weather data with:
+
 - Current conditions (temp, humidity, wind)
 - 5-day forecast
 - Temperature unit toggle (°C/°F)
 - Weather icons based on conditions
 
 ### BudgetTracker
+
 Full expense tracking with:
+
 - Participant management
 - Expense categorization
 - Cost splitting calculations
